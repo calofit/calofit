@@ -1,16 +1,16 @@
-import {View, Text, ActivityIndicator, TextInput, FlatList, TouchableOpacity} from "react-native";
+import { Stack, useRouter } from "expo-router";
 import ExpoStatusBar from "expo-status-bar/build/ExpoStatusBar";
-import {Stack, useRouter} from "expo-router";
-import {useState} from "react";
-import {StorageManager} from "../storageManager";
-import Svg, {Circle} from "react-native-svg";
+import { useState } from "react";
+import { ActivityIndicator, FlatList, Text, TextInput, TouchableOpacity, View } from "react-native";
+import Svg, { Circle } from "react-native-svg";
+import { StorageManager } from "../storageManager";
 
 
 function progressCircle(value, maxValue) {
     let percent1 = Math.min(Math.round((value / maxValue) * 100), 100)
     let percent2 = 0;
-    if(value > maxValue){
-        percent2 = Math.min(Math.round(((value - maxValue) / maxValue) * 100),100)
+    if (value > maxValue) {
+        percent2 = Math.min(Math.round(((value - maxValue) / maxValue) * 100), 100)
     }
     let circumference = 150 * 2 * Math.PI
     let dashoffset = (circumference - percent1 / 100 * circumference);
@@ -24,9 +24,9 @@ function progressCircle(value, maxValue) {
                 <Text className="text-4xl text-white w-2/3 text-center">kCal</Text>
             </View>
             <Svg className="h-96 -rotate-90">
-                <Circle className="stroke-neutral-700" fill="transparent" strokeWidth="20" r="150" cx="50%" cy="50%"/>
-                <Circle className="stroke-green-500" strokeWidth="20" strokeDasharray={circumference} strokeDashoffset={dashoffset} strokeLinecap="round" fill="transparent" r="150" cx="50%" cy="50%"/>
-                <Circle className="stroke-amber-500" strokeWidth="20" strokeDasharray={circumference} strokeDashoffset={dashoffset2} strokeLinecap="round" fill="transparent" r="150" cx="50%" cy="50%"/>
+                <Circle className="stroke-neutral-700" fill="transparent" strokeWidth="20" r="150" cx="50%" cy="50%" />
+                <Circle className="stroke-green-500" strokeWidth="20" strokeDasharray={circumference} strokeDashoffset={dashoffset} strokeLinecap="round" fill="transparent" r="150" cx="50%" cy="50%" />
+                <Circle className="stroke-amber-500" strokeWidth="20" strokeDasharray={circumference} strokeDashoffset={dashoffset2} strokeLinecap="round" fill="transparent" r="150" cx="50%" cy="50%" />
             </Svg>
         </View>
     )
@@ -35,7 +35,7 @@ function progressCircle(value, maxValue) {
 export default function Home() {
     const router = useRouter();
     const storageMgr = StorageManager.getInstance()
-    const  {isLoading, error} = storageMgr.init()
+    const { isLoading, error } = storageMgr.init()
 
 
     const [input, setInput] = useState("")
@@ -44,7 +44,7 @@ export default function Home() {
 
 
     function handleCalorieInput(input) {
-        setInput(input.replace(/[^0-9]/g, ''))
+        //setInput(input.replace(/[^0-9]/g, ''))
     }
 
     function onCardPress(pressEvent, itemData) {
@@ -64,48 +64,48 @@ export default function Home() {
 
     return (
         <View className="flex h-full w-full bg-neutral-800">
-            <ExpoStatusBar style="light"/>
+            <ExpoStatusBar style="light" />
             <Stack.Screen options={{
                 headerShown: false,
                 headerTitle: '',
-                headerStyle: {backgroundColor: 'rgb(23 23 23)'},
-            }}/>
-                {isLoading ? (
-                    <ActivityIndicator size="small" />
-                ) : error ? (
-                    <Text>Something went wrong</Text>
-                ) : (
-                    <View className="flex w-full justify-center items-center">
-                        {progressCircle(calories,3000)}
-                        <View className="w-4/6">
-                            <TextInput keyboardType='number-pad' className="bg-neutral-900 border border-neutral-600 rounded-lg text-4xl text-white text-center w-full pt-0.5 h-16" placeholder={'2000 kCal'} placeholderTextColor="#555555" value={input} onChangeText={handleCalorieInput}/>
-                            <TouchableOpacity onPress={(e) => {openCardCreator(e)}}>
-                                <View className="flex flex-col items-center m-2 bg-neutral-700 rounded-lg shadow-md">
-                                    <View className="flex flex-col justify-center p-4 leading-normal w-full">
-                                        <Text className="mb-2 text-2xl font-bold tracking-tight text-white text-center">Add a new Item</Text>
-                                    </View>
+                headerStyle: { backgroundColor: 'rgb(23 23 23)' },
+            }} />
+            {isLoading ? (
+                <ActivityIndicator size="small" />
+            ) : error ? (
+                <Text>Something went wrong</Text>
+            ) : (
+                <View className="flex w-full justify-center items-center">
+                    {progressCircle(calories, 3000)}
+                    <View className="w-4/6">
+                        <TextInput keyboardType='number-pad' className="bg-neutral-900 border border-neutral-600 rounded-lg text-4xl text-white text-center w-full pt-0.5 h-16" placeholder={'2000 kCal'} placeholderTextColor="#555555" onChangeText={handleCalorieInput} />
+                        <TouchableOpacity onPress={(e) => { openCardCreator(e) }}>
+                            <View className="flex flex-col items-center m-2 bg-neutral-700 rounded-lg shadow-md">
+                                <View className="flex flex-col justify-center p-4 leading-normal w-full">
+                                    <Text className="mb-2 text-2xl font-bold tracking-tight text-white text-center">Add a new Item</Text>
                                 </View>
-                            </TouchableOpacity>
-                            <FlatList
-                                data={storageMgr.quickAddItems}
-                                className="w-full pt-4"
-                                renderItem={(resultData) => {
-                                    let quickAddItem = resultData.item
-                                    return(
-                                        <TouchableOpacity onPress={(e) => {onCardPress(e, quickAddItem)}}>
-                                            <View className="flex flex-col items-center m-2 bg-neutral-700 rounded-lg shadow-md">
-                                                <View className="flex flex-col justify-center p-4 leading-normal w-full">
-                                                    <Text className="mb-2 text-2xl font-bold tracking-tight text-white">{quickAddItem.name}</Text>
-                                                    <Text className="mb-2 text-lg text-white">{quickAddItem.calories}</Text>
-                                                </View>
+                            </View>
+                        </TouchableOpacity>
+                        <FlatList
+                            data={storageMgr.quickAddItems}
+                            className="w-full pt-4"
+                            renderItem={(resultData) => {
+                                let quickAddItem = resultData.item
+                                return (
+                                    <TouchableOpacity onPress={(e) => { onCardPress(e, quickAddItem) }}>
+                                        <View className="flex flex-col items-center m-2 bg-neutral-700 rounded-lg shadow-md">
+                                            <View className="flex flex-col justify-center p-4 leading-normal w-full">
+                                                <Text className="mb-2 text-2xl font-bold tracking-tight text-white">{quickAddItem.name}</Text>
+                                                <Text className="mb-2 text-lg text-white">{quickAddItem.calories}</Text>
                                             </View>
-                                        </TouchableOpacity>
-                                    )
-                                }}
-                            />
-                        </View>
+                                        </View>
+                                    </TouchableOpacity>
+                                )
+                            }}
+                        />
                     </View>
-                )}
+                </View>
+            )}
         </View>
     );
 }
