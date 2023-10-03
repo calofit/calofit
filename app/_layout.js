@@ -7,7 +7,7 @@ SplashScreen.preventAutoHideAsync();
 const Layout = () => {
 
     return (
-        <SafeAreaView className="h-full w-full bg-neutral-800">
+        <SafeAreaView className="h-full w-full bg-neutral-900">
             <Stack />
         </SafeAreaView>
     );
