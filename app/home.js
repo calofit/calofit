@@ -1,4 +1,4 @@
-import {View, Text, ActivityIndicator, TextInput, FlatList, TouchableOpacity} from "react-native";
+import {View, Text, ActivityIndicator, TextInput, FlatList, TouchableOpacity, ScrollView} from "react-native";
 import ExpoStatusBar from "expo-status-bar/build/ExpoStatusBar";
 import {Stack, useRouter} from "expo-router";
 import {useState} from "react";
@@ -74,7 +74,7 @@ export default function Home() {
                 ) : error ? (
                     <Text>Something went wrong</Text>
                 ) : (
-                    <View className="flex w-full px-4">
+                    <ScrollView className="flex w-full px-4">
                         <View className="bg-neutral-800 rounded-3xl mb-4 shadow-md">
                             <Text className="text-2xl font-bold text-white pt-4 pl-6">Calories Budget</Text>
                             {progressCircle(calories,3000)}
@@ -103,18 +103,7 @@ export default function Home() {
                                 <Text className="text-2xl text-white">120kal</Text>
                             </View>
                         </View>
-
-                        <FlatList
-                            data={storageMgr.quickAddItems}
-                            className="w-full pt-4"
-                            renderItem={(resultData) => {
-                                let quickAddItem = resultData.item
-                                return(
-                                    <></>
-                                )
-                            }}
-                        />
-                    </View>
+                    </ScrollView>
                 )}
         </View>
     );
