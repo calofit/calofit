@@ -1,7 +1,6 @@
-import { Entypo } from '@expo/vector-icons';
-import { Stack, useRouter } from "expo-router";
 import ExpoStatusBar from "expo-status-bar/build/ExpoStatusBar";
 import { useState } from "react";
+import { ActivityIndicator, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import Svg, { Circle } from "react-native-svg";
 import { StorageManager } from "../storageManager";
 
@@ -73,7 +72,7 @@ export default function Home() {
             ) : error ? (
                 <Text>Something went wrong</Text>
             ) : (
-                <View className="flex w-full px-4">
+                <ScrollView className="flex w-full px-4">
                     <View className="bg-neutral-800 rounded-3xl mb-4 shadow-md">
                         <Text className="text-2xl font-bold text-white pt-4 pl-6">Calories Budget</Text>
                         {progressCircle(calories, 3000)}
@@ -102,20 +101,8 @@ export default function Home() {
                             <Text className="text-2xl text-white">120kal</Text>
                         </View>
                     </View>
-                    <FlatList
-                        data={storageMgr.quickAddItems}
-                        className="w-full pt-4"
-                        renderItem={(resultData) => {
-                            let quickAddItem = resultData.item
-                            return (
-                                <></>
-                            )
-                        }}
-                    />
-                </View>
-                </View>
-    )
-}
-        </View >
+                </ScrollView>
+            )}
+        </View>
     );
 }
