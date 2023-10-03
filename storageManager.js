@@ -22,20 +22,7 @@ export class StorageManager {
         const [isLoading, setLoading] = useState(true)
         const [error, setError] = useState(null);
 
-        async function fetchData(template) {
-            try {
-                let response = await AsyncStorage.getItem('trackerData')
-                if (response === null || response.length === 0) {
-                    response = template
-                }
-                setLoading(false)
-                return JSON.parse(response)
-            } catch (err) {
-                console.error(err)
-                setError(err)
-                setLoading(false)
-            }
-        }
+
 
         if (this.loaded) {
             setLoading(false)
@@ -43,10 +30,30 @@ export class StorageManager {
         }
 
         useEffect(() => {
-            fetchData(this.dataTemplate).then(returnData => {
-                this.loaded = true
-                this.data = returnData
-            })
+
+            const fetchData = async (template) => {
+                try {
+                    let response = await AsyncStorage.getItem('trackerData')
+                    if (response === null || response.length === 0) {
+                        response = template
+                    }
+
+                    this.data = JSON.parse(response)
+                    //this.loaded = true
+                    //  TODO: Buggy as shit
+                    this.quickAddItems = this.data.quickAdd
+                    this.calories = this.data.calories
+                    setLoading(false)
+
+                } catch (err) {
+                    console.error(err)
+                    setError(err)
+                    setLoading(false)
+                }
+
+            }
+
+            fetchData(this.dataTemplate)
         }, [])
 
 
@@ -58,7 +65,7 @@ export class StorageManager {
         await this.saveData()
     }
 
-    async setQuickAddItems(newItems) {
+    async addQuickAddItems(newItems) {
         this.quickAddItems.push(newItems)
         await this.saveData()
     }
@@ -66,7 +73,8 @@ export class StorageManager {
     async saveData() {
         this.data.calories = this.calories
         this.data.quickAdd = this.quickAddItems
-        await AsyncStorage.setItem('trackerData', this.data)
+        console.log(JSON.stringify(this.data))
+        await AsyncStorage.setItem('trackerData', JSON.stringify(this.data))
     }
 
 }
