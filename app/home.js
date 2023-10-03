@@ -3,6 +3,8 @@ import { useState } from "react";
 import { ActivityIndicator, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import Svg, { Circle } from "react-native-svg";
 import { StorageManager } from "../storageManager";
+import { Stack, useRouter } from "expo-router";
+import {Entypo} from "@expo/vector-icons";
 
 
 function progressCircle(value, maxValue) {
