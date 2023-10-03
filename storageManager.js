@@ -1,5 +1,5 @@
-import {useEffect, useState} from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useEffect, useState } from "react";
 
 export class StorageManager {
 
@@ -8,10 +8,7 @@ export class StorageManager {
     calories = 0;
     quickAddItems = [];
     loaded = false;
-    dataTemplate = {
-        "calories": 0,
-        "quickAdd": []
-    }
+    dataTemplate = '{"calories": 0,"quickAdd": []}'
 
     static getInstance() {
         if (!this.instance) {
@@ -28,19 +25,21 @@ export class StorageManager {
         async function fetchData(template) {
             try {
                 let response = await AsyncStorage.getItem('trackerData')
-                if (response.length === 0) {
+                if (response === null || response.length === 0) {
                     response = template
                 }
                 setLoading(false)
                 return JSON.parse(response)
             } catch (err) {
+                console.error(err)
                 setError(err)
+                setLoading(false)
             }
         }
 
-        if(this.loaded) {
+        if (this.loaded) {
             setLoading(false)
-            return {isLoading, error}
+            return { isLoading, error }
         }
 
         useEffect(() => {
@@ -51,7 +50,7 @@ export class StorageManager {
         }, [])
 
 
-        return {isLoading, error}
+        return { isLoading, error }
     }
 
     async setCalories(addedCalories) {
