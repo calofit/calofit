@@ -1,7 +1,7 @@
+import { Entypo } from '@expo/vector-icons';
 import { Stack, useRouter } from "expo-router";
 import ExpoStatusBar from "expo-status-bar/build/ExpoStatusBar";
 import { useState } from "react";
-import { ActivityIndicator, FlatList, Text, TextInput, TouchableOpacity, View } from "react-native";
 import Svg, { Circle } from "react-native-svg";
 import { StorageManager } from "../storageManager";
 
@@ -12,21 +12,21 @@ function progressCircle(value, maxValue) {
     if (value > maxValue) {
         percent2 = Math.min(Math.round(((value - maxValue) / maxValue) * 100), 100)
     }
-    let circumference = 150 * 2 * Math.PI
+    let circumference = 165 * 2 * Math.PI
     let dashoffset = (circumference - percent1 / 100 * circumference);
     let dashoffset2 = (circumference - percent2 / 100 * circumference);
 
     return (
-        <View className="w-full justify-center">
+        <View className="w-full justify-center pb-1.5">
             <View className="absolute w-full items-center pt-2">
                 <Text className="text-6xl text-white w-2/3 text-center font-semibold">{value}</Text>
                 <Text className="text-5xl text-white w-2/3 text-center font-semibold">/ {maxValue}</Text>
                 <Text className="text-4xl text-white w-2/3 text-center">kCal</Text>
             </View>
             <Svg className="h-96 -rotate-90">
-                <Circle className="stroke-neutral-700" fill="transparent" strokeWidth="20" r="150" cx="50%" cy="50%" />
-                <Circle className="stroke-green-500" strokeWidth="20" strokeDasharray={circumference} strokeDashoffset={dashoffset} strokeLinecap="round" fill="transparent" r="150" cx="50%" cy="50%" />
-                <Circle className="stroke-amber-500" strokeWidth="20" strokeDasharray={circumference} strokeDashoffset={dashoffset2} strokeLinecap="round" fill="transparent" r="150" cx="50%" cy="50%" />
+                <Circle className="stroke-neutral-900" fill="transparent" strokeWidth="20" r="165" cx="50%" cy="50%" />
+                <Circle className="stroke-emerald-500" strokeWidth="28" strokeDasharray={circumference} strokeDashoffset={dashoffset} strokeLinecap="round" fill="transparent" r="165" cx="50%" cy="50%" />
+                <Circle className="stroke-amber-500" strokeWidth="28" strokeDasharray={circumference} strokeDashoffset={dashoffset2} strokeLinecap="round" fill="transparent" r="165" cx="50%" cy="50%" />
             </Svg>
         </View>
     )
@@ -63,49 +63,59 @@ export default function Home() {
     }
 
     return (
-        <View className="flex h-full w-full bg-neutral-800">
+        <View className="flex h-full w-full bg-neutral-900">
             <ExpoStatusBar style="light" />
             <Stack.Screen options={{
                 headerShown: false,
-                headerTitle: '',
-                headerStyle: { backgroundColor: 'rgb(23 23 23)' },
             }} />
             {isLoading ? (
                 <ActivityIndicator size="small" />
             ) : error ? (
                 <Text>Something went wrong</Text>
             ) : (
-                <View className="flex w-full justify-center items-center">
-                    {progressCircle(calories, 3000)}
-                    <View className="w-4/6">
-                        <TextInput keyboardType='number-pad' className="bg-neutral-900 border border-neutral-600 rounded-lg text-4xl text-white text-center w-full pt-0.5 h-16" placeholder={'2000 kCal'} placeholderTextColor="#555555" onChangeText={handleCalorieInput} />
-                        <TouchableOpacity onPress={(e) => { openCardCreator(e) }}>
-                            <View className="flex flex-col items-center m-2 bg-neutral-700 rounded-lg shadow-md">
-                                <View className="flex flex-col justify-center p-4 leading-normal w-full">
-                                    <Text className="mb-2 text-2xl font-bold tracking-tight text-white text-center">Add a new Item</Text>
+                <View className="flex w-full px-4">
+                    <View className="bg-neutral-800 rounded-3xl mb-4 shadow-md">
+                        <Text className="text-2xl font-bold text-white pt-4 pl-6">Calories Budget</Text>
+                        {progressCircle(calories, 3000)}
+                    </View>
+                    <View className="flex flex-row mb-4">
+                        <TouchableOpacity className="basis-1/2 pr-2" onPress={(e) => { openCardCreator(e) }}>
+                            <View className="flex flex-col items-center bg-neutral-800 rounded-3xl shadow-md">
+                                <View className="flex flex-col justify-center items-center p-4 leading-normal w-full">
+                                    <Entypo name="plus" size={28} color="white" />
                                 </View>
                             </View>
                         </TouchableOpacity>
-                        <FlatList
-                            data={storageMgr.quickAddItems}
-                            className="w-full pt-4"
-                            renderItem={(resultData) => {
-                                let quickAddItem = resultData.item
-                                return (
-                                    <TouchableOpacity onPress={(e) => { onCardPress(e, quickAddItem) }}>
-                                        <View className="flex flex-col items-center m-2 bg-neutral-700 rounded-lg shadow-md">
-                                            <View className="flex flex-col justify-center p-4 leading-normal w-full">
-                                                <Text className="mb-2 text-2xl font-bold tracking-tight text-white">{quickAddItem.name}</Text>
-                                                <Text className="mb-2 text-lg text-white">{quickAddItem.calories}</Text>
-                                            </View>
-                                        </View>
-                                    </TouchableOpacity>
-                                )
-                            }}
-                        />
+                        <TouchableOpacity className="basis-1/2 pl-2" onPress={(e) => { openCardCreator(e) }}>
+                            <View className="flex flex-col items-center bg-neutral-800 rounded-3xl shadow-md">
+                                <View className="flex flex-col justify-center items-center p-4 leading-normal w-full">
+                                    <Entypo name="add-to-list" size={28} color="white" />
+                                </View>
+                            </View>
+                        </TouchableOpacity>
                     </View>
+                    <Text className="text-2xl font-bold text-white mb-4">Recent Meals</Text>
+
+                    <View className="flex flex-row rounded-3xl bg-neutral-800 shadow-md w-full p-4">
+                        <Text className="text-2xl font-bold tracking-tight text-white basis-1/2">Green Salad</Text>
+                        <View className="flex flex-row basis-1/2 justify-end">
+                            <Text className="text-2xl text-white">120kal</Text>
+                        </View>
+                    </View>
+                    <FlatList
+                        data={storageMgr.quickAddItems}
+                        className="w-full pt-4"
+                        renderItem={(resultData) => {
+                            let quickAddItem = resultData.item
+                            return (
+                                <></>
+                            )
+                        }}
+                    />
                 </View>
-            )}
-        </View>
+                </View>
+    )
+}
+        </View >
     );
 }
