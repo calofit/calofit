@@ -1,10 +1,9 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useEffect, useState } from "react";
 
 export class StorageManager {
 
     static instance;
-    data;
+    data = null;
     calories = 0;
     quickAddItems = [];
     loaded = false;
@@ -18,46 +17,27 @@ export class StorageManager {
         return this.instance
     }
 
-    init() {
-        const [isLoading, setLoading] = useState(true)
-        const [error, setError] = useState(null);
-
-
-
-        if (this.loaded) {
-            setLoading(false)
-            return { isLoading, error }
+    async init() {
+        if (this.data !== null) {
+            return { loadingState: false, errorState: null }
         }
 
-        useEffect(() => {
-
-            const fetchData = async (template) => {
-                try {
-                    let response = await AsyncStorage.getItem('trackerData')
-                    if (response === null || response.length === 0) {
-                        response = template
-                    }
-
-                    this.data = JSON.parse(response)
-                    //this.loaded = true
-                    //  TODO: Buggy as shit
-                    this.quickAddItems = this.data.quickAdd
-                    this.calories = this.data.calories
-                    setLoading(false)
-
-                } catch (err) {
-                    console.error(err)
-                    setError(err)
-                    setLoading(false)
-                }
-
+        try {
+            let response = await AsyncStorage.getItem('trackerData')
+            if (response === null || response.length === 0) {
+                response = this.dataTemplate
             }
 
-            fetchData(this.dataTemplate)
-        }, [])
+            this.data = JSON.parse(response)
+            this.quickAddItems = this.data.quickAdd
+            this.calories = this.data.calories
+            return { loadingState: false, errorState: null }
 
+        } catch (err) {
+            console.error(err)
+            return { loadingState: false, errorState: err }
+        }
 
-        return { isLoading, error }
     }
 
     async setCalories(addedCalories) {

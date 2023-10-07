@@ -1,10 +1,10 @@
+import { Entypo } from "@expo/vector-icons";
+import { Stack, useRouter } from "expo-router";
 import ExpoStatusBar from "expo-status-bar/build/ExpoStatusBar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ActivityIndicator, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import Svg, { Circle } from "react-native-svg";
 import { StorageManager } from "../storageManager";
-import { Stack, useRouter } from "expo-router";
-import {Entypo} from "@expo/vector-icons";
 
 
 function progressCircle(value, maxValue) {
@@ -34,10 +34,18 @@ function progressCircle(value, maxValue) {
 }
 
 export default function Home() {
-    const router = useRouter();
-    const storageMgr = StorageManager.getInstance()
-    const { isLoading, error } = storageMgr.init()
+    const router = useRouter()
 
+    let [isLoading, setLoading] = useState(true)
+    let [error, setError] = useState(null)
+
+    useEffect(() => {
+        const storageMgr = StorageManager.getInstance()
+        storageMgr.init().then((returnVal) => {
+            setLoading(returnVal.loadingState)
+            setError(returnVal.errorState)
+        })
+    }, [])
 
     const [input, setInput] = useState("")
 
