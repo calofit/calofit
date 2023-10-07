@@ -2,7 +2,7 @@ import { Entypo } from "@expo/vector-icons";
 import { Stack, useRouter } from "expo-router";
 import ExpoStatusBar from "expo-status-bar/build/ExpoStatusBar";
 import { useEffect, useState } from "react";
-import { ActivityIndicator, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, Pressable, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import Svg, { Circle } from "react-native-svg";
 import { StorageManager } from "../storageManager";
 
@@ -35,40 +35,31 @@ function progressCircle(value, maxValue) {
 
 export default function Home() {
     const router = useRouter()
+    const storageMgr = StorageManager.getInstance()
 
     let [isLoading, setLoading] = useState(true)
     let [error, setError] = useState(null)
 
     useEffect(() => {
-        const storageMgr = StorageManager.getInstance()
         storageMgr.init().then((returnVal) => {
             setLoading(returnVal.loadingState)
             setError(returnVal.errorState)
+            setCalories(storageMgr.calories)
         })
     }, [])
 
-    const [input, setInput] = useState("")
-
     const [calories, setCalories] = useState(2000)
 
-
-    function handleCalorieInput(input) {
-        //setInput(input.replace(/[^0-9]/g, ''))
-    }
-
-    function onCardPress(pressEvent, itemData) {
-        console.log(itemData)
-        addCalories(itemData.calories)
-    }
-
-    function openCardCreator(pressEvent) {
+    function openCardCreator(_) {
         router.push('/newItem')
     }
 
-    function addCalories(addedValue) {
-        storageMgr.setCalories(addedValue).then(() => {
-            // TODO: Send a Toast that Data was saved
-        })
+    function openCardSelector(_) {
+        router.push('/selectItem')
+    }
+
+    function reset() {
+        storageMgr.reset()
     }
 
     return (
@@ -87,15 +78,18 @@ export default function Home() {
                         <Text className="text-2xl font-bold text-white pt-4 pl-6">Calories Budget</Text>
                         {progressCircle(calories, 3000)}
                     </View>
+                    <Pressable onPress={reset}>
+                        <Text>Reset</Text>
+                    </Pressable>
                     <View className="flex flex-row mb-4">
-                        <TouchableOpacity className="basis-1/2 pr-2" onPress={(e) => { openCardCreator(e) }}>
+                        <TouchableOpacity className="basis-1/2 pr-2" onPress={openCardCreator}>
                             <View className="flex flex-col items-center bg-neutral-800 rounded-3xl shadow-md">
                                 <View className="flex flex-col justify-center items-center p-4 leading-normal w-full">
                                     <Entypo name="plus" size={28} color="white" />
                                 </View>
                             </View>
                         </TouchableOpacity>
-                        <TouchableOpacity className="basis-1/2 pl-2" onPress={(e) => { openCardCreator(e) }}>
+                        <TouchableOpacity className="basis-1/2 pl-2" onPress={openCardSelector}>
                             <View className="flex flex-col items-center bg-neutral-800 rounded-3xl shadow-md">
                                 <View className="flex flex-col justify-center items-center p-4 leading-normal w-full">
                                     <Entypo name="add-to-list" size={28} color="white" />
@@ -112,7 +106,8 @@ export default function Home() {
                         </View>
                     </View>
                 </ScrollView>
-            )}
-        </View>
+            )
+            }
+        </View >
     );
 }
