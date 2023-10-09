@@ -1,14 +1,14 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useEffect, useState } from "react";
 
 export class StorageManager {
 
     static instance;
-    data;
+    data = null;
     calories = 0;
     quickAddItems = [];
-    loaded = false;
-    dataTemplate = '{"calories": 0,"quickAdd": []}'
+    history = [];
+    lastDay = null;
+    dataTemplate = '{"calories": 0, "quickAdd": [], "history": [], "lastDay": ""}'
 
     static getInstance() {
         if (!this.instance) {
@@ -18,50 +18,44 @@ export class StorageManager {
         return this.instance
     }
 
-    init() {
-        const [isLoading, setLoading] = useState(true)
-        const [error, setError] = useState(null);
-
-
-
-        if (this.loaded) {
-            setLoading(false)
-            return { isLoading, error }
+    async init() {
+        if (this.data !== null) {
+            return { loadingState: false, errorState: null }
         }
 
-        useEffect(() => {
-
-            const fetchData = async (template) => {
-                try {
-                    let response = await AsyncStorage.getItem('trackerData')
-                    if (response === null || response.length === 0) {
-                        response = template
-                    }
-
-                    this.data = JSON.parse(response)
-                    //this.loaded = true
-                    //  TODO: Buggy as shit
-                    this.quickAddItems = this.data.quickAdd
-                    this.calories = this.data.calories
-                    setLoading(false)
-
-                } catch (err) {
-                    console.error(err)
-                    setError(err)
-                    setLoading(false)
-                }
-
+        try {
+            let response = await AsyncStorage.getItem('trackerData')
+            if (response === null || response.length === 0) {
+                response = this.dataTemplate
             }
 
-            fetchData(this.dataTemplate)
-        }, [])
+            this.data = JSON.parse(response)
+            this.quickAddItems = this.data.quickAdd
+            this.calories = this.data.calories
+            this.history = this.data.history
+            this.lastDay = this.data.lastDay
 
+            if (this.lastDay !== (new Date).toDateString()) {
+                this.lastDay = (new Date).toDateString()
+                this.calories = 0
+                this.saveData()
+            }
+            return { loadingState: false, errorState: null }
 
-        return { isLoading, error }
+        } catch (err) {
+            console.error(err)
+            return { loadingState: false, errorState: err }
+        }
+
     }
 
-    async setCalories(addedCalories) {
+    async addCalories(addedCalories) {
         this.calories += addedCalories
+        await this.saveData()
+    }
+
+    async addHistory(item) {
+        this.history.push(item)
         await this.saveData()
     }
 
@@ -73,7 +67,18 @@ export class StorageManager {
     async saveData() {
         this.data.calories = this.calories
         this.data.quickAdd = this.quickAddItems
+        this.data.history = this.history
+        this.data.lastDay = this.lastDay
         console.log(JSON.stringify(this.data))
+        await AsyncStorage.setItem('trackerData', JSON.stringify(this.data))
+    }
+
+    async reset() {
+        this.data = JSON.parse(this.dataTemplate)
+        this.calories = 0;
+        this.quickAddItems = [];
+        this.history = [];
+        this.lastDay = null;
         await AsyncStorage.setItem('trackerData', JSON.stringify(this.data))
     }
 
