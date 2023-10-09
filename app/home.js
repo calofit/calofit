@@ -26,8 +26,8 @@ function progressCircle(value, maxValue) {
             </View>
             <Svg className="h-96 -rotate-90">
                 <Circle className="stroke-neutral-900" fill="transparent" strokeWidth="20" r="165" cx="50%" cy="50%" />
-                <Circle className="stroke-emerald-500" strokeWidth="28" strokeDasharray={circumference} strokeDashoffset={dashoffset} strokeLinecap="round" fill="transparent" r="165" cx="50%" cy="50%" />
-                <Circle className="stroke-amber-500" strokeWidth="28" strokeDasharray={circumference} strokeDashoffset={dashoffset2} strokeLinecap="round" fill="transparent" r="165" cx="50%" cy="50%" />
+                <Circle className="stroke-emerald-600" strokeWidth="28" strokeDasharray={circumference} strokeDashoffset={dashoffset} strokeLinecap="round" fill="transparent" r="165" cx="50%" cy="50%" />
+                <Circle className="stroke-amber-600" strokeWidth="28" strokeDasharray={circumference} strokeDashoffset={dashoffset2} strokeLinecap="round" fill="transparent" r="165" cx="50%" cy="50%" />
             </Svg>
         </View>
     )
@@ -61,19 +61,30 @@ export default function Home() {
     function reset() {
         storageMgr.reset()
     }
+    const menuButton = () => {
+        return(
+            <View className="-top-2 -left-2">
+                <Entypo name="menu" size={28} color="white" />
+            </View>
+        )
+    }
 
     return (
         <View className="flex h-full w-full bg-neutral-900">
             <ExpoStatusBar style="light" />
             <Stack.Screen options={{
-                headerShown: false,
+                headerShown: true,
+                headerStyle: { backgroundColor: '#262626' },
+                headerTitle: '',
+                headerLeft: menuButton,
+                headerShadowVisible: false,
             }} />
             {isLoading ? (
                 <ActivityIndicator size="small" />
             ) : error ? (
                 <Text>Something went wrong</Text>
             ) : (
-                <ScrollView className="flex w-full px-4">
+                <ScrollView className="flex w-full px-4 pt-4">
                     <View className="bg-neutral-800 rounded-3xl mb-4 shadow-md">
                         <Text className="text-2xl font-bold text-white pt-4 pl-6">Calories Budget</Text>
                         {progressCircle(calories, 3000)}
