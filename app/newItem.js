@@ -32,10 +32,10 @@ export default function NewItem() {
             <ExpoStatusBar style="light" />
             <Stack.Screen options={{
                 headerShown: true,
-                headerTitle: 'New Item',
+                headerTitle: '',
                 headerStyle: { backgroundColor: '#262626' },
-                headerTitleStyle: { color: '#FFF' },
                 headerShadowVisible: false,
+                headerTintColor: '#059669',
             }} />
             <View className="rounded-3xl bg-neutral-800 shadow-md w-full px-4 pt-2 pb-4 mb-4">
                 <Text className="text-2xl font-bold tracking-tight text-white pb-2 text-center">Name</Text>

@@ -20,9 +20,9 @@ function progressCircle(value, maxValue) {
     return (
         <View className="w-full justify-center pb-1.5">
             <View className="absolute w-full items-center pt-2">
-                <Text className="text-6xl text-white w-2/3 text-center font-semibold">{value}</Text>
-                <Text className="text-5xl text-white w-2/3 text-center font-semibold">/ {maxValue}</Text>
-                <Text className="text-4xl text-white w-2/3 text-center">kCal</Text>
+                <Text className="text-6xl text-white w-2/3 tracking-tight text-center font-semibold">{value}</Text>
+                <Text className="text-5xl text-white w-2/3 tracking-tight text-center font-semibold">/ {maxValue}</Text>
+                <Text className="text-4xl text-white w-2/3 tracking-tight text-center">kCal</Text>
             </View>
             <Svg className="h-96 -rotate-90">
                 <Circle className="stroke-neutral-900" fill="transparent" strokeWidth="20" r="165" cx="50%" cy="50%" />
@@ -88,7 +88,7 @@ export default function Home() {
             ) : (
                 <ScrollView className="flex w-full px-4 pt-4">
                     <View className="bg-neutral-800 rounded-3xl mb-4 shadow-md">
-                        <Text className="text-2xl font-bold text-white pt-4 pl-6">Calories Budget</Text>
+                        <Text className="text-2xl font-bold tracking-tight text-white pt-4 pl-6">Calories Budget</Text>
                         {progressCircle(calories, 3000)}
                     </View>
                     {/* TODO: Remove */}
@@ -111,7 +111,7 @@ export default function Home() {
                             </View>
                         </TouchableOpacity>
                     </View>
-                    <Text className="text-2xl font-bold text-white mb-4">Recent Meals</Text>
+                    <Text className="text-2xl font-bold tracking-tight text-white mb-4">Recent Meals</Text>
                     {
                         history.reverse().map((item, index) => {
                             return (

@@ -58,25 +58,32 @@ export default function SelectItem() {
         <View>
             <ExpoStatusBar style="light" />
             <Stack.Screen options={{
-                headerShown: false,
+                headerShown: true,
+                headerTitle: '',
+                headerStyle: { backgroundColor: '#262626' },
+                headerShadowVisible: false,
+                headerTintColor: '#059669',
             }} />
             {isLoading ? (
                 <ActivityIndicator size="small" />
             ) : error ? (
                 <Text>Something went wrong</Text>
             ) : (
-                <View className="p-10">
+                <View className="p-4 bg-neutral-900">
                     <SectionList
                         sections={DATA}
+                        stickySectionHeadersEnabled={false}
                         keyExtractor={(item, index) => item + index}
                         renderItem={({ item }) => (
-                            <TouchableOpacity className="border rounded" onPress={(e) => onCardPress(e, item)}>
-                                <Text className="text-5xl">{item.name}</Text>
-                                <Text>{item.calories}</Text>
+                            <TouchableOpacity className="flex flex-row rounded-3xl bg-neutral-800 shadow-md w-full p-4 mb-4" onPress={(e) => onCardPress(e, item)}>
+                                <Text className="text-2xl font-bold tracking-tight text-white basis-1/2">{item.name}</Text>
+                                <View className="flex flex-row basis-1/2 justify-end">
+                                    <Text className="text-2xl text-white">{item.calories} kcal</Text>
+                                </View>
                             </TouchableOpacity>
                         )}
                         renderSectionHeader={({ section }) => (
-                            <Text className="text-7xl">{section.category}</Text>
+                            <Text className="text-2xl font-bold tracking-tight text-white pb-4">{section.category}</Text>
                         )} />
                 </View>
             )
