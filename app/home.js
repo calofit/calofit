@@ -45,10 +45,12 @@ export default function Home() {
             setLoading(returnVal.loadingState)
             setError(returnVal.errorState)
             setCalories(storageMgr.calories)
+            setHistory(storageMgr.history)
         })
     }, [])
 
     const [calories, setCalories] = useState(2000)
+    const [history, setHistory] = useState([])
 
     function openCardCreator(_) {
         router.push('/newItem')
@@ -62,7 +64,7 @@ export default function Home() {
         storageMgr.reset()
     }
     const menuButton = () => {
-        return(
+        return (
             <View className="-top-2 -left-2">
                 <Entypo name="menu" size={28} color="white" />
             </View>
@@ -89,6 +91,7 @@ export default function Home() {
                         <Text className="text-2xl font-bold text-white pt-4 pl-6">Calories Budget</Text>
                         {progressCircle(calories, 3000)}
                     </View>
+                    {/* TODO: Remove */}
                     <Pressable onPress={reset}>
                         <Text>Reset</Text>
                     </Pressable>
@@ -109,13 +112,19 @@ export default function Home() {
                         </TouchableOpacity>
                     </View>
                     <Text className="text-2xl font-bold text-white mb-4">Recent Meals</Text>
+                    {
+                        history.reverse().map((item, index) => {
+                            return (
+                                <View className="flex flex-row rounded-3xl bg-neutral-800 shadow-md w-full p-4 mb-2" key={index}>
+                                    <Text className="text-2xl font-bold tracking-tight text-white basis-1/2">{item.name}</Text>
+                                    <View className="flex flex-row basis-1/2 justify-end">
+                                        <Text className="text-2xl text-white">{item.calories} kCal</Text>
+                                    </View>
+                                </View>
+                            )
+                        })
+                    }
 
-                    <View className="flex flex-row rounded-3xl bg-neutral-800 shadow-md w-full p-4">
-                        <Text className="text-2xl font-bold tracking-tight text-white basis-1/2">Green Salad</Text>
-                        <View className="flex flex-row basis-1/2 justify-end">
-                            <Text className="text-2xl text-white">120kal</Text>
-                        </View>
-                    </View>
                 </ScrollView>
             )
             }
