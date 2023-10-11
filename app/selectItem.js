@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { ActivityIndicator, SectionList, Text, TouchableOpacity, View } from 'react-native';
 import Toast from "react-native-root-toast";
 import { StorageManager } from "../storageManager";
+import BasicRowItem from "../comp/BasicRowItem";
 
 
 const DATA = [
@@ -75,12 +76,11 @@ export default function SelectItem() {
                         stickySectionHeadersEnabled={false}
                         keyExtractor={(item, index) => item + index}
                         renderItem={({ item }) => (
-                            <TouchableOpacity className="flex flex-row rounded-3xl bg-neutral-800 shadow-md w-full p-4 mb-4" onPress={(e) => onCardPress(e, item)}>
-                                <Text className="text-2xl font-bold tracking-tight text-white basis-1/2">{item.name}</Text>
-                                <View className="flex flex-row basis-1/2 justify-end">
-                                    <Text className="text-2xl text-white">{item.calories} kcal</Text>
-                                </View>
-                            </TouchableOpacity>
+                            <BasicRowItem
+                                onPress ={(e) => onCardPress(e, item)}
+                                title={item.name}
+                                calories={item.calories}
+                            />
                         )}
                         renderSectionHeader={({ section }) => (
                             <Text className="text-2xl font-bold tracking-tight text-white pb-4">{section.category}</Text>

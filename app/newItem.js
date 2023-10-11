@@ -3,8 +3,8 @@ import ExpoStatusBar from "expo-status-bar/build/ExpoStatusBar";
 import { useState } from "react";
 import { Text, TextInput, View } from "react-native";
 import { StorageManager } from "../storageManager";
-import CustomButton from "./Button";
-import CategorySelector from "./CategorySelector";
+import CustomButton from "../comp/Button";
+import CategorySelector from "../comp/CategorySelector";
 import { Ionicons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
