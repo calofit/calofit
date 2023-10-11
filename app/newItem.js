@@ -4,9 +4,9 @@ import ExpoStatusBar from "expo-status-bar/build/ExpoStatusBar";
 import { useState } from "react";
 import { Text, TextInput, View } from "react-native";
 import Toast from 'react-native-root-toast';
+import CustomButton from "../comp/Button";
+import CategorySelector from "../comp/CategorySelector";
 import { StorageManager } from "../storageManager";
-import CustomButton from "./Button";
-import CategorySelector from "./CategorySelector";
 
 const CATEGROIES = [
     [

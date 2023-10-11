@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { ActivityIndicator, Pressable, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import Svg, { Circle } from "react-native-svg";
 import { StorageManager } from "../storageManager";
+import BasicRowItem from "../comp/BasicRowItem";
 
 
 function progressCircle(value, maxValue) {
@@ -116,12 +117,11 @@ export default function Home() {
                     {
                         history.reverse().map((item, index) => {
                             return (
-                                <View className="flex flex-row rounded-3xl bg-neutral-800 shadow-md w-full p-4 mb-2" key={index}>
-                                    <Text className="text-2xl font-bold tracking-tight text-white basis-1/2">{item.name}</Text>
-                                    <View className="flex flex-row basis-1/2 justify-end">
-                                        <Text className="text-2xl text-white">{item.calories} kCal</Text>
-                                    </View>
-                                </View>
+                                <BasicRowItem
+                                    key={index}
+                                    title={item.name}
+                                    calories={item.calories}
+                                />
                             )
                         })
                     }
