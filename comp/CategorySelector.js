@@ -1,17 +1,17 @@
-import {Text, TouchableOpacity, View} from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 
 export default function CategorySelector(props) {
-    const { onPress, title = 'Category', icon, pad, isSelected = false} = props;
+    const { onPress, title = 'Category', icon, isSelected = false } = props;
     let bColor = "bg-neutral-900"
-    if(isSelected){
+    if (isSelected) {
         bColor = "bg-emerald-600"
     }
     return (
-        <TouchableOpacity className={`basis-1/2 ${pad}`} onPress={onPress}>
-            <View className={`${bColor} rounded-3xl items-center p-4`}>
+        <View className={`basis-1/2 p-2`} >
+            <TouchableOpacity className={`${bColor} rounded-3xl h-32 items-center p-4`} onPress={onPress}>
                 {icon}
                 <Text className="text-2xl font-bold tracking-tight text-white text-center">{title}</Text>
-            </View>
-        </TouchableOpacity>
+            </TouchableOpacity>
+        </View>
     );
 }
