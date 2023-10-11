@@ -8,7 +8,7 @@ export class StorageManager {
     quickAddItems = [];
     history = [];
     lastDay = null;
-    dataTemplate = '{"calories": 0, "quickAdd": [], "history": [], "lastDay": ""}'
+    dataTemplate = '{"calories": 0, "quickAdd": [{"category": "Drinks", "data": []}, {"category": "Main", "data": []}, {"category": "Sides", "data": []}, {"category": "Deserts", "data": []}], "history": [], "lastDay": ""}'
 
     static getInstance() {
         if (!this.instance) {
@@ -59,8 +59,13 @@ export class StorageManager {
         await this.saveData()
     }
 
-    async addQuickAddItems(newItems) {
-        this.quickAddItems.push(newItems)
+    async addQuickAddItems(selectedCategory, newItems) {
+        let index = this.quickAddItems.findIndex(item => item.category === selectedCategory)
+        if (index === -1) {
+            this.quickAddItems.push({ category: selectedCategory, data: [] })
+            index = this.quickAddItems.findIndex(item => item.category === selectedCategory)
+        }
+        this.quickAddItems[index].data.push(newItems)
         await this.saveData()
     }
 

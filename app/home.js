@@ -62,6 +62,7 @@ export default function Home() {
 
     function reset() {
         storageMgr.reset()
+        router.replace('/home')
     }
     const menuButton = () => {
         return (

@@ -5,32 +5,13 @@ import { ActivityIndicator, SectionList, Text, TouchableOpacity, View } from 're
 import Toast from "react-native-root-toast";
 import { StorageManager } from "../storageManager";
 
-
-const DATA = [
-    {
-        category: 'Main dishes',
-        data: [{ name: 'Pizza', calories: 2000 }, { name: 'Burger', calories: 1000 }, { name: 'Risotto', calories: 800 }],
-    },
-    {
-        category: 'Sides',
-        data: [{ name: 'French Fries', calories: 800 }, { name: 'Salad', calories: 200 }, { name: 'Sandwich', calories: 1200 }],
-    },
-    {
-        category: 'Drinks',
-        data: [{ name: 'Water', calories: 0 }, { name: 'Limo', calories: 20 }],
-    },
-    {
-        category: 'Desserts',
-        data: [{ name: 'Ice', calories: 345 }],
-    },
-];
-
 export default function SelectItem() {
     const storageMgr = StorageManager.getInstance()
     const router = useRouter()
 
     let [isLoading, setLoading] = useState(true)
     let [error, setError] = useState(null)
+    let [items, setItems] = useState([])
 
     function onCardPress(_, itemData) {
         addCalories(itemData)
@@ -51,6 +32,7 @@ export default function SelectItem() {
         storageMgr.init().then((returnVal) => {
             setLoading(returnVal.loadingState)
             setError(returnVal.errorState)
+            setItems(storageMgr.quickAddItems)
         })
     }, [])
 
@@ -71,7 +53,7 @@ export default function SelectItem() {
             ) : (
                 <View className="p-4 bg-neutral-900">
                     <SectionList
-                        sections={DATA}
+                        sections={items}
                         stickySectionHeadersEnabled={false}
                         keyExtractor={(item, index) => item + index}
                         renderItem={({ item }) => (
