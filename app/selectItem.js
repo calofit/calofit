@@ -5,6 +5,7 @@ import { ActivityIndicator, SectionList, Text, TouchableOpacity, View } from 're
 import Toast from "react-native-root-toast";
 import { StorageManager } from "../storageManager";
 import BasicRowItem from "../comp/BasicRowItem";
+import CustomButton from "../comp/Button";
 
 export default function SelectItem() {
     const storageMgr = StorageManager.getInstance()
@@ -13,6 +14,7 @@ export default function SelectItem() {
     let [isLoading, setLoading] = useState(true)
     let [error, setError] = useState(null)
     let [items, setItems] = useState([])
+    let [empty, setEmpty] = useState(false)
 
     function onCardPress(_, itemData) {
         addCalories(itemData)
@@ -34,6 +36,14 @@ export default function SelectItem() {
             setLoading(returnVal.loadingState)
             setError(returnVal.errorState)
             setItems(storageMgr.quickAddItems)
+            
+            let amountOfItems = 0;
+            items.forEach(e => {
+                amountOfItems += e.data.length
+            });
+            if(amountOfItems == 0) {
+                setEmpty(true)
+            }
         })
     }, [])
 
@@ -52,21 +62,36 @@ export default function SelectItem() {
             ) : error ? (
                 <Text>Something went wrong</Text>
             ) : (
-                <View className="p-4 bg-neutral-900">
-                    <SectionList
-                        sections={items}
-                        stickySectionHeadersEnabled={false}
-                        keyExtractor={(item, index) => item + index}
-                        renderItem={({ item }) => (
-                            <BasicRowItem
-                                onPress ={(e) => onCardPress(e, item)}
-                                title={item.name}
-                                calories={item.calories}
-                            />
-                        )}
-                        renderSectionHeader={({ section }) => (
-                            <Text className="text-2xl font-bold tracking-tight text-white pb-4">{section.category}</Text>
-                        )} />
+                <View className="bg-neutral-900 h-full">
+                    {empty ? (
+                        <View className="p-4">
+                            <Text className="text-center pb-4 text-white text-xl tracking-tight">no saved items available</Text>
+                            <CustomButton title="add new" onPress={() => {router.push("newItem")}}/>
+                        </View>
+                        
+                    ) : (
+                        <SectionList
+                            className="p-4"
+                            sections={items}
+                            stickySectionHeadersEnabled={false}
+                            keyExtractor={(item, index) => item + index}
+                            renderItem={({ item }) => (
+                                <BasicRowItem
+                                    onPress ={(e) => onCardPress(e, item)}
+                                    title={item.name}
+                                    calories={item.calories}
+                                />
+                            )}
+                            renderSectionHeader={({ section }) => {
+                                let content = (<></>)
+                                if (section.data.length > 0) {
+                                    content = (<Text className="text-2xl font-bold tracking-tight text-white pb-4">{section.category}</Text>)
+                                }
+                                return (content)
+                            }   
+                        }/>
+                    )}
+                    
                 </View>
             )
             }
