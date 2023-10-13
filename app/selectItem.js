@@ -16,6 +16,14 @@ export default function SelectItem() {
     let [items, setItems] = useState([])
     let [empty, setEmpty] = useState(false)
 
+    let amountOfItems = 0;
+    items.forEach(e => {
+        amountOfItems += e.data.length
+    });
+    if(amountOfItems == 0) {
+        setEmpty(true)
+    }
+
     function onCardPress(_, itemData) {
         addCalories(itemData)
     }
@@ -78,13 +86,6 @@ export default function SelectItem() {
                                 let content = (<></>)
                                 if (section.data.length > 0) {
                                     content = (<Text className="text-2xl font-bold tracking-tight text-white pb-4">{section.category}</Text>)
-                                }
-                                let amountOfItems = 0;
-                                items.forEach(e => {
-                                    amountOfItems += e.data.length
-                                });
-                                if(amountOfItems == 0) {
-                                    setEmpty(true)
                                 }
                                 return (content)
                             }   
