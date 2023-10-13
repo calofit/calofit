@@ -16,14 +16,6 @@ export default function SelectItem() {
     let [items, setItems] = useState([])
     let [empty, setEmpty] = useState(false)
 
-    let amountOfItems = 0;
-    items.forEach(e => {
-        amountOfItems += e.data.length
-    });
-    if(amountOfItems == 0) {
-        setEmpty(true)
-    }
-
     function onCardPress(_, itemData) {
         addCalories(itemData)
     }
@@ -44,6 +36,14 @@ export default function SelectItem() {
             setLoading(returnVal.loadingState)
             setError(returnVal.errorState)
             setItems(storageMgr.quickAddItems)
+            
+            let amountOfItems = 0;
+            items.forEach(e => {
+                amountOfItems += e.data.length
+            });
+            if(amountOfItems == 0) {
+                setEmpty(true)
+            }
         })
     }, [])
 
