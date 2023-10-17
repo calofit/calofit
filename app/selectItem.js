@@ -23,9 +23,12 @@ export default function SelectItem() {
     function addCalories(item) {
         storageMgr.addCalories(item.calories)
         storageMgr.addHistory(item).then(() => {
-            Toast.show('Saved Calories.', {
+            Toast.show(<View className="rounded-3xl bg-emerald-800 shadow-md p-4"><Text className="text-xl font-bold tracking-tight text-white">Added to budget</Text></View>, {
                 duration: Toast.durations.LONG,
-                position: -40
+                position: -1,
+                opacity: 1,
+                shadow: false,
+                backgroundColor: "transparent",
             });
             router.replace('/home')
         })
@@ -38,7 +41,7 @@ export default function SelectItem() {
             setItems(storageMgr.quickAddItems)
             
             let amountOfItems = 0;
-            items.forEach(e => {
+            storageMgr.quickAddItems.forEach(e => {
                 amountOfItems += e.data.length
             });
             if(amountOfItems == 0) {
