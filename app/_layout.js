@@ -1,21 +1,36 @@
-import { Stack } from 'expo-router';
-import * as SplashScreen from "expo-splash-screen";
-import {View} from "react-native";
 import * as ScreenOrientation from 'expo-screen-orientation';
-import { RootSiblingParent } from 'react-native-root-siblings';
+import * as SplashScreen from "expo-splash-screen";
+import { Drawer } from '../comp/Drawer';
 
 
 SplashScreen.preventAutoHideAsync();
 const Layout = () => {
-
     ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP);
-
     return (
-        <View className="h-full w-full bg-neutral-900">
-            <RootSiblingParent>
-                <Stack />
-            </RootSiblingParent>
-        </View>
+        <Drawer>
+            <Drawer.Screen
+                name="index" // This is the name of the page and must match the url from root
+                options={{
+                    drawerLabel: "Home",
+                    title: "overview",
+                    drawerItemStyle: { display: 'none' }
+                }}
+            />
+            <Drawer.Screen
+                name="home" // This is the name of the page and must match the url from root
+                options={{
+                    drawerLabel: "Home",
+                    title: "Home",
+                }}
+            />
+            <Drawer.Screen
+                name="settings" // This is the name of the page and must match the url from root
+                options={{
+                    drawerLabel: "Settings",
+                    title: "Settings",
+                }}
+            />
+        </Drawer>
     );
 }
 

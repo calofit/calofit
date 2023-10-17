@@ -1,11 +1,11 @@
 import { Stack, useRouter } from "expo-router";
 import ExpoStatusBar from "expo-status-bar/build/ExpoStatusBar";
 import { useEffect, useState } from "react";
-import { ActivityIndicator, SectionList, Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, SectionList, Text, View } from 'react-native';
 import Toast from "react-native-root-toast";
-import { StorageManager } from "../storageManager";
 import BasicRowItem from "../comp/BasicRowItem";
 import CustomButton from "../comp/Button";
+import { StorageManager } from "../storageManager";
 
 export default function SelectItem() {
     const storageMgr = StorageManager.getInstance()
@@ -39,12 +39,12 @@ export default function SelectItem() {
             setLoading(returnVal.loadingState)
             setError(returnVal.errorState)
             setItems(storageMgr.quickAddItems)
-            
+
             let amountOfItems = 0;
             storageMgr.quickAddItems.forEach(e => {
                 amountOfItems += e.data.length
             });
-            if(amountOfItems == 0) {
+            if (amountOfItems == 0) {
                 setEmpty(true)
             }
         })
@@ -69,9 +69,9 @@ export default function SelectItem() {
                     {empty ? (
                         <View className="p-4">
                             <Text className="text-center pb-4 text-white text-xl tracking-tight">no saved items available</Text>
-                            <CustomButton title="add new" onPress={() => {router.push("newItem")}}/>
+                            <CustomButton title="add new" onPress={() => { router.push("newItem") }} />
                         </View>
-                        
+
                     ) : (
                         <SectionList
                             className="p-4"
@@ -80,7 +80,7 @@ export default function SelectItem() {
                             keyExtractor={(item, index) => item + index}
                             renderItem={({ item }) => (
                                 <BasicRowItem
-                                    onPress ={(e) => onCardPress(e, item)}
+                                    onPress={(e) => onCardPress(e, item)}
                                     title={item.name}
                                     calories={item.calories}
                                 />
@@ -91,10 +91,10 @@ export default function SelectItem() {
                                     content = (<Text className="text-2xl font-bold tracking-tight text-white pb-4">{section.category}</Text>)
                                 }
                                 return (content)
-                            }   
-                        }/>
+                            }
+                            } />
                     )}
-                    
+
                 </View>
             )
             }

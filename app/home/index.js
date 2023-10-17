@@ -4,8 +4,8 @@ import ExpoStatusBar from "expo-status-bar/build/ExpoStatusBar";
 import { useEffect, useState } from "react";
 import { ActivityIndicator, Pressable, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import Svg, { Circle } from "react-native-svg";
-import { StorageManager } from "../storageManager";
-import BasicRowItem from "../comp/BasicRowItem";
+import BasicRowItem from "../../comp/BasicRowItem";
+import { StorageManager } from "../../storageManager";
 
 
 function progressCircle(value, maxValue) {
@@ -54,33 +54,25 @@ export default function Home() {
     const [history, setHistory] = useState([])
 
     function openCardCreator(_) {
-        router.push('/newItem')
+        router.push('/home/newItem')
     }
 
     function openCardSelector(_) {
-        router.push('/selectItem')
+        router.push('/home/selectItem')
     }
 
     function reset() {
         storageMgr.reset()
         router.replace('/home')
     }
-    const menuButton = () => {
-        return (
-            <View className="-top-2 -left-2">
-                <Entypo name="menu" size={28} color="white" />
-            </View>
-        )
-    }
 
     return (
         <View className="flex h-full w-full bg-neutral-900">
             <ExpoStatusBar style="light" />
             <Stack.Screen options={{
-                headerShown: true,
+                headerShown: false,
                 headerStyle: { backgroundColor: '#262626' },
                 headerTitle: '',
-                headerLeft: menuButton,
                 headerShadowVisible: false,
             }} />
             {isLoading ? (
