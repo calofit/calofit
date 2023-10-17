@@ -4,9 +4,9 @@ import ExpoStatusBar from "expo-status-bar/build/ExpoStatusBar";
 import { useState } from "react";
 import { Text, TextInput, View } from "react-native";
 import Toast from 'react-native-root-toast';
-import CustomButton from "../../comp/Button";
-import CategorySelector from "../../comp/CategorySelector";
-import { StorageManager } from "../../storageManager";
+import CustomButton from "../comp/Button";
+import CategorySelector from "../comp/CategorySelector";
+import { StorageManager } from "../storageManager";
 
 const CATEGROIES = [
     [
@@ -31,11 +31,15 @@ export default function NewItem() {
         setSelectedCategory(itemTitle)
     }
 
+
     function onPressSave(pressEvent) {
         if (selectedCategory === "" || itemCaloriesInput === "" || selectedCategory === "") {
-            Toast.show('Invalid Input.', {
+            Toast.show(<View className="rounded-3xl bg-red-800 shadow-md p-4"><Text className="text-xl font-bold tracking-tight text-white">invalid input</Text></View>, {
                 duration: Toast.durations.LONG,
-                position: -40
+                position: -1,
+                opacity: 1,
+                shadow: false,
+                backgroundColor: "transparent",
             });
             return
         }
