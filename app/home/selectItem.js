@@ -3,9 +3,9 @@ import ExpoStatusBar from "expo-status-bar/build/ExpoStatusBar";
 import { useEffect, useState } from "react";
 import { ActivityIndicator, SectionList, Text, View } from 'react-native';
 import Toast from "react-native-root-toast";
-import BasicRowItem from "../comp/BasicRowItem";
-import CustomButton from "../comp/Button";
-import { StorageManager } from "../storageManager";
+import BasicRowItem from "../../comp/BasicRowItem";
+import CustomButton from "../../comp/Button";
+import { StorageManager } from "../../storageManager";
 
 export default function SelectItem() {
     const storageMgr = StorageManager.getInstance()
