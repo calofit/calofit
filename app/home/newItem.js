@@ -48,8 +48,15 @@ export default function NewItem() {
             "name": itemNameInput,
             "calories": itemCaloriesInput,
         }
-        storageMgr.addQuickAddItems(selectedCategory, itemData)
+        storageMgr.addQuickAddItem(selectedCategory, itemData)
+        
+        addToHistory(itemData)
+
         router.replace('/home')
+    }
+    function addToHistory(item) {
+        storageMgr.addCalories(item.calories)
+        storageMgr.addHistory(item)
     }
 
     function handleCaloryInput(txt) {

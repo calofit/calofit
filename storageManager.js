@@ -50,7 +50,7 @@ export class StorageManager {
     }
 
     async addCalories(addedCalories) {
-        this.calories += addedCalories
+        this.calories += parseInt(addedCalories)
         await this.saveData()
     }
 
@@ -59,13 +59,13 @@ export class StorageManager {
         await this.saveData()
     }
 
-    async addQuickAddItems(selectedCategory, newItems) {
+    async addQuickAddItem(selectedCategory, newItem) {
         let index = this.quickAddItems.findIndex(item => item.category === selectedCategory)
         if (index === -1) {
             this.quickAddItems.push({ category: selectedCategory, data: [] })
             index = this.quickAddItems.findIndex(item => item.category === selectedCategory)
         }
-        this.quickAddItems[index].data.push(newItems)
+        this.quickAddItems[index].data.push(newItem)
         await this.saveData()
     }
 
