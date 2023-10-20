@@ -2,7 +2,7 @@ import { Entypo } from "@expo/vector-icons";
 import { Stack, useRouter } from "expo-router";
 import ExpoStatusBar from "expo-status-bar/build/ExpoStatusBar";
 import { useEffect, useState } from "react";
-import { ActivityIndicator, Pressable, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import Svg, { Circle } from "react-native-svg";
 import BasicRowItem from "../../comp/BasicRowItem";
 import { StorageManager } from "../../storageManager";
@@ -61,10 +61,7 @@ export default function Home() {
         router.push('/home/selectItem')
     }
 
-    function reset() {
-        storageMgr.reset()
-        router.replace('/home')
-    }
+
 
     return (
         <View className="flex h-full w-full bg-neutral-900">
@@ -85,10 +82,6 @@ export default function Home() {
                         <Text className="text-2xl font-bold tracking-tight text-white pt-4 pl-6">Calories Budget</Text>
                         {progressCircle(calories, 3000)}
                     </View>
-                    {/* TODO: Remove */}
-                    <Pressable onPress={reset}>
-                        <Text>Reset</Text>
-                    </Pressable>
                     <View className="flex flex-row mb-4">
                         <TouchableOpacity className="basis-1/2 pr-2" onPress={openCardCreator}>
                             <View className="flex flex-col items-center bg-neutral-800 rounded-3xl shadow-md">
