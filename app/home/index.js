@@ -1,10 +1,12 @@
-import { Entypo } from "@expo/vector-icons";
+import { AntDesign, Entypo } from "@expo/vector-icons";
 import { Stack, useRouter } from "expo-router";
 import ExpoStatusBar from "expo-status-bar/build/ExpoStatusBar";
 import { useEffect, useState } from "react";
-import { ActivityIndicator, Pressable, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, Modal, Pressable, ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native";
+import Toast from "react-native-root-toast";
 import Svg, { Circle } from "react-native-svg";
 import BasicRowItem from "../../comp/BasicRowItem";
+import Button from "../../comp/Button";
 import { StorageManager } from "../../storageManager";
 
 
@@ -34,6 +36,49 @@ function progressCircle(value, maxValue) {
     )
 }
 
+function BudgetSettingsModal({ onPress, isVisible, onClose }) {
+    const [input, setInput] = useState('')
+
+    function handleInput(txt) {
+        setInput(txt.replace(/[^0-9]/g, ''))
+    }
+
+    function handleSave() {
+        if (input?.length === 0) {
+            Toast.show(<View className="rounded-3xl bg-red-800 shadow-md p-4"><Text className="text-xl font-bold tracking-tight text-white">invalid input</Text></View>, {
+                duration: Toast.durations.LONG,
+                position: -1,
+                opacity: 1,
+                shadow: false,
+                backgroundColor: "transparent",
+            });
+            return
+        }
+        onPress(input)
+        onClose()
+        setInput('')
+    }
+
+    return (
+        <Modal animationType="slide" transparent={true} visible={isVisible}>
+            <View className="flex justify-center items-center h-screen w-screen">
+                <View className=" bg-neutral-900 rounded-xl p-12">
+                    <View className="rounded-3xl bg-neutral-800 shadow-md w-full p-2 pb-4 mb-4">
+                        <Text className="text-2xl font-bold tracking-tight text-white pb-2 text-center">New calorie Budget</Text>
+                        <TextInput className="bg-neutral-900 rounded-xl text-2xl text-white w-full py-2" placeholder={'3000 kCal'} placeholderTextColor="#555555" value={input} onChangeText={handleInput} />
+                    </View>
+                    <Button onPress={handleSave} />
+                    <View className="flex justify-center items-center pt-2">
+                        <Pressable className="bg-red-500 rounded-lg" onPress={onClose}>
+                            <AntDesign name="close" size={24} color="black" />
+                        </Pressable>
+                    </View>
+                </View>
+            </View>
+        </Modal>
+    )
+}
+
 export default function Home() {
     const router = useRouter()
     const storageMgr = StorageManager.getInstance()
@@ -46,12 +91,15 @@ export default function Home() {
             setLoading(returnVal.loadingState)
             setError(returnVal.errorState)
             setCalories(storageMgr.calories)
+            setCalorieBudget(storageMgr.budget)
             setHistory(storageMgr.history)
         })
     }, [])
 
     const [calories, setCalories] = useState(2000)
     const [history, setHistory] = useState([])
+    const [calorieBudget, setCalorieBudget] = useState(3000)
+    const [modalState, setModalState] = useState(false)
 
     function openCardCreator(_) {
         router.push('/home/newItem')
@@ -64,6 +112,15 @@ export default function Home() {
     function reset() {
         storageMgr.reset()
         router.replace('/home')
+    }
+
+    function toggleSettingsModal() {
+        setModalState(!modalState)
+    }
+
+    function setNewCalorieBudget(budget) {
+        storageMgr.setCalorieBudget(budget)
+        setCalorieBudget(budget)
     }
 
     return (
@@ -81,10 +138,11 @@ export default function Home() {
                 <Text>Something went wrong</Text>
             ) : (
                 <ScrollView className="flex w-full px-4 pt-4">
-                    <View className="bg-neutral-800 rounded-3xl mb-4 shadow-md">
+                    <BudgetSettingsModal onPress={setNewCalorieBudget} isVisible={modalState} onClose={toggleSettingsModal} />
+                    <Pressable className="bg-neutral-800 rounded-3xl mb-4 shadow-md" onPress={toggleSettingsModal}>
                         <Text className="text-2xl font-bold tracking-tight text-white pt-4 pl-6">Calories Budget</Text>
-                        {progressCircle(calories, 3000)}
-                    </View>
+                        {progressCircle(calories, calorieBudget)}
+                    </Pressable>
                     {/* TODO: Remove */}
                     <Pressable onPress={reset}>
                         <Text>Reset</Text>
