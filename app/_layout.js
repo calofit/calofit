@@ -7,7 +7,7 @@ SplashScreen.preventAutoHideAsync();
 const Layout = () => {
     ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP);
     return (
-        <Drawer>
+        <Drawer screenOptions={header={headerShown:false}}>
             <Drawer.Screen
                 name="index" // This is the name of the page and must match the url from root
                 options={{

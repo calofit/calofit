@@ -6,6 +6,7 @@ import { ActivityIndicator, Pressable, ScrollView, Text, TouchableOpacity, View 
 import Svg, { Circle } from "react-native-svg";
 import BasicRowItem from "../../comp/BasicRowItem";
 import { StorageManager } from "../../storageManager";
+import { useNavigation } from '@react-navigation/native';
 
 
 function progressCircle(value, maxValue) {
@@ -34,7 +35,7 @@ function progressCircle(value, maxValue) {
     )
 }
 
-export default function Home() {
+export default function Home( ) {
     const router = useRouter()
     const storageMgr = StorageManager.getInstance()
 
@@ -66,13 +67,23 @@ export default function Home() {
         router.replace('/home')
     }
 
+    const menuButton = () => {
+        const navigation = useNavigation();
+        return (
+            <TouchableOpacity className="-top-1 -left-2" onPress={() => navigation.openDrawer()}>
+                <Entypo name="menu" size={28} color="white" />
+            </TouchableOpacity>
+        )
+    }
+
     return (
         <View className="flex h-full w-full bg-neutral-900">
             <ExpoStatusBar style="light" />
             <Stack.Screen options={{
-                headerShown: false,
+                headerShown: true,
                 headerStyle: { backgroundColor: '#262626' },
                 headerTitle: '',
+                headerLeft: menuButton,
                 headerShadowVisible: false,
             }} />
             {isLoading ? (
