@@ -7,7 +7,27 @@ SplashScreen.preventAutoHideAsync();
 const Layout = () => {
     ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP);
     return (
-        <Drawer screenOptions={header={headerShown:false}}>
+        <Drawer screenOptions={{
+            headerShown: false,
+            drawerActiveBackgroundColor: '#262626',
+            drawerActiveTintColor: 'white',
+            drawerInactiveBackgroundColor: '#262626',
+            drawerInactiveTintColor: 'white',
+            drawerType: 'front',
+            drawerStyle: {
+                width: '100%',
+                backgroundColor: '#171717',
+                padding: 4,
+            },
+            drawerItemStyle: {
+                padding: 4,
+                borderRadius: 40
+            },
+            drawerLabelStyle: {
+                
+            }
+        }}
+        >
             <Drawer.Screen
                 name="index" // This is the name of the page and must match the url from root
                 options={{

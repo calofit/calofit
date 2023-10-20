@@ -37,6 +37,7 @@ function progressCircle(value, maxValue) {
 
 export default function Home( ) {
     const router = useRouter()
+    const navigation = useNavigation();
     const storageMgr = StorageManager.getInstance()
 
     let [isLoading, setLoading] = useState(true)
@@ -68,7 +69,6 @@ export default function Home( ) {
     }
 
     const menuButton = () => {
-        const navigation = useNavigation();
         return (
             <TouchableOpacity className="-top-1 -left-2" onPress={() => navigation.openDrawer()}>
                 <Entypo name="menu" size={28} color="white" />
