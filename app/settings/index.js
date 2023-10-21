@@ -1,6 +1,6 @@
 import { Stack, useNavigation } from "expo-router"
 import ExpoStatusBar from "expo-status-bar/build/ExpoStatusBar"
-import { View } from "react-native"
+import { Text, View } from "react-native"
 import CustomButton from "../../comp/Button"
 import { StorageManager } from "../../storageManager"
 
@@ -26,7 +26,7 @@ export default function Settings() {
             }} />
             {process.env.NODE_ENV === "development" ? (
                 <CustomButton title="Reset Storage" onPress={reset} />
-            ) : <></>}
+            ) : <Text className="text-2xl font-bold tracking-tight text-white pb-2 text-center">To configure the Calorie Budget just click on the circle on the home page.</Text>}
         </View>
     )
 }
