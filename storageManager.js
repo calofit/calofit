@@ -56,8 +56,18 @@ export class StorageManager {
         await this.saveData()
     }
 
+    async subtractCalories(calories) {
+        this.calories -= parseInt(calories)
+        await this.saveData()
+    }
+
     async addHistory(item) {
         this.history.push(item)
+        await this.saveData()
+    }
+
+    async removeHistory(item) {
+        this.history = this.history.splice(this.history.indexOf(item), 1)
         await this.saveData()
     }
 
