@@ -2,11 +2,11 @@ import { AntDesign, Entypo } from "@expo/vector-icons";
 import { Stack, useRouter } from "expo-router";
 import ExpoStatusBar from "expo-status-bar/build/ExpoStatusBar";
 import { useEffect, useState } from "react";
-import { ActivityIndicator, Modal, ScrollView, Text, TextInput, TouchableOpacity, View, Pressable } from "react-native";
+import { ActivityIndicator, Modal, Pressable, ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native";
 import Toast from "react-native-root-toast";
 import Svg, { Circle } from "react-native-svg";
-import BasicRowItem from "../../comp/BasicRowItem";
 import Button from "../../comp/Button";
+import SwipeableRowItem from "../../comp/SwipeableRowItem";
 import { StorageManager } from "../../storageManager";
 
 
@@ -109,8 +109,6 @@ export default function Home() {
         router.push('/home/selectItem')
     }
 
-
-
     function toggleSettingsModal() {
         setModalState(!modalState)
     }
@@ -118,6 +116,13 @@ export default function Home() {
     function setNewCalorieBudget(budget) {
         storageMgr.setCalorieBudget(budget)
         setCalorieBudget(budget)
+    }
+
+    function deleteHistoryItem(item) {
+        storageMgr.removeHistory(item)
+        storageMgr.subtractCalories(item.calories)
+        setCalories(storageMgr.calories)
+        setHistory(storageMgr.history)
     }
 
     return (
@@ -161,10 +166,11 @@ export default function Home() {
                     {
                         history.reverse().map((item, index) => {
                             return (
-                                <BasicRowItem
+                                <SwipeableRowItem
                                     key={index}
                                     title={item.name}
                                     calories={item.calories}
+                                    onDelete={() => deleteHistoryItem(item)}
                                 />
                             )
                         })
