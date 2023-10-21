@@ -67,8 +67,6 @@ export class StorageManager {
     }
 
     async removeHistory(item) {
-        console.log(this.history.indexOf(item))
-        console.log(this.history.splice(this.history.indexOf(item), 1))
         this.history = this.history.splice(this.history.indexOf(item), 1)
         await this.saveData()
     }
