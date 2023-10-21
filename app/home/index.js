@@ -8,6 +8,7 @@ import Svg, { Circle } from "react-native-svg";
 import Button from "../../comp/Button";
 import SwipeableRowItem from "../../comp/SwipeableRowItem";
 import { StorageManager } from "../../storageManager";
+import { useNavigation } from '@react-navigation/native';
 
 
 function progressCircle(value, maxValue) {
@@ -81,6 +82,7 @@ function BudgetSettingsModal({ onPress, isVisible, onClose }) {
 
 export default function Home() {
     const router = useRouter()
+    const navigation = useNavigation();
     const storageMgr = StorageManager.getInstance()
 
     let [isLoading, setLoading] = useState(true)
@@ -118,6 +120,15 @@ export default function Home() {
         setCalorieBudget(budget)
     }
 
+
+    const menuButton = () => {
+        return (
+            <TouchableOpacity className="-top-2.5 p-4" onPress={() => navigation.openDrawer()}>
+                <Entypo name="menu" size={32} color="white" />
+            </TouchableOpacity>
+        )
+    }
+
     function deleteHistoryItem(item) {
         storageMgr.removeHistory(item)
         storageMgr.subtractCalories(item.calories)
@@ -129,9 +140,10 @@ export default function Home() {
         <View className="flex h-full w-full bg-neutral-900">
             <ExpoStatusBar style="light" />
             <Stack.Screen options={{
-                headerShown: false,
+                headerShown: true,
                 headerStyle: { backgroundColor: '#262626' },
                 headerTitle: '',
+                headerLeft: menuButton,
                 headerShadowVisible: false,
             }} />
             {isLoading ? (
