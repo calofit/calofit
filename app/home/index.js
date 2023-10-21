@@ -41,7 +41,9 @@ function BudgetSettingsModal({ onPress, isVisible, onClose }) {
     const [input, setInput] = useState('')
 
     function handleInput(txt) {
-        setInput(txt.replace(/[^0-9]/g, ''))
+        txt = txt.replace(/[^0-9]/g, '')
+        txt = txt.substring(0,5)
+        setInput(txt)
     }
 
     function handleSave() {
@@ -62,18 +64,13 @@ function BudgetSettingsModal({ onPress, isVisible, onClose }) {
 
     return (
         <Modal animationType="slide" transparent={true} visible={isVisible}>
-            <View className="flex justify-center items-center h-screen w-screen">
-                <View className=" bg-neutral-900 rounded-xl p-12">
-                    <View className="rounded-3xl bg-neutral-800 shadow-md w-full p-2 pb-4 mb-4">
-                        <Text className="text-2xl font-bold tracking-tight text-white pb-2 text-center">New calorie Budget</Text>
-                        <TextInput className="bg-neutral-900 rounded-xl text-2xl text-white w-full py-2" placeholder={'3000 kCal'} placeholderTextColor="#555555" value={input} onChangeText={handleInput} />
+            <View className="flex justify-center items-center h-screen w-screen shadow-md">
+                <View className=" bg-neutral-900 rounded-3xl p-4">
+                    <View className="rounded-3xl bg-neutral-800 shadow-md w-full p-4 mb-4">
+                        <Text className="text-2xl font-bold tracking-tight text-white pb-2 text-center mx-4">New Budget</Text>
+                        <TextInput keyboardType='number-pad' className="bg-neutral-900 rounded-xl text-2xl text-white p-4" placeholder={'3000 kCal'} placeholderTextColor="#555555" value={input} onChangeText={handleInput} />
                     </View>
                     <Button onPress={handleSave} />
-                    <View className="flex justify-center items-center pt-2">
-                        <Pressable className="bg-red-500 rounded-lg" onPress={onClose}>
-                            <AntDesign name="close" size={24} color="black" />
-                        </Pressable>
-                    </View>
                 </View>
             </View>
         </Modal>
@@ -152,10 +149,10 @@ export default function Home() {
                 <Text>Something went wrong</Text>
             ) : (
                 <ScrollView className="flex w-full px-4 pt-4">
-                    <BudgetSettingsModal onPress={setNewCalorieBudget} isVisible={modalState} onClose={toggleSettingsModal} />
                     <Pressable className="bg-neutral-800 rounded-3xl mb-4 shadow-md" onPress={toggleSettingsModal}>
                         <Text className="text-2xl font-bold tracking-tight text-white pt-4 pl-6">Calories Budget</Text>
                         {progressCircle(calories, calorieBudget)}
+                        <BudgetSettingsModal onPress={setNewCalorieBudget} isVisible={modalState} onClose={toggleSettingsModal} />
                     </Pressable>
 
                     <View className="flex flex-row mb-4">
