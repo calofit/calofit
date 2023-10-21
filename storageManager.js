@@ -5,10 +5,11 @@ export class StorageManager {
     static instance;
     data = null;
     calories = 0;
+    budget = 0;
     quickAddItems = [];
     history = [];
     lastDay = null;
-    dataTemplate = '{"calories": 0, "quickAdd": [{"category": "Drinks", "data": []}, {"category": "Main", "data": []}, {"category": "Sides", "data": []}, {"category": "Deserts", "data": []}], "history": [], "lastDay": ""}'
+    dataTemplate = '{"calories": 0, "budget": 3000, "quickAdd": [{"category": "Drinks", "data": []}, {"category": "Main", "data": []}, {"category": "Sides", "data": []}, {"category": "Deserts", "data": []}], "history": [], "lastDay": ""}'
 
     static getInstance() {
         if (!this.instance) {
@@ -34,6 +35,7 @@ export class StorageManager {
             this.calories = this.data.calories
             this.history = this.data.history
             this.lastDay = this.data.lastDay
+            this.budget = this.data.budget
 
             if (this.lastDay !== (new Date).toDateString()) {
                 this.lastDay = (new Date).toDateString()
@@ -69,11 +71,17 @@ export class StorageManager {
         await this.saveData()
     }
 
+    async setCalorieBudget(newBudget) {
+        this.budget = parseInt(newBudget)
+        await this.saveData()
+    }
+
     async saveData() {
         this.data.calories = this.calories
         this.data.quickAdd = this.quickAddItems
         this.data.history = this.history
         this.data.lastDay = this.lastDay
+        this.data.budget = this.budget
         console.log(JSON.stringify(this.data))
         await AsyncStorage.setItem('trackerData', JSON.stringify(this.data))
     }
