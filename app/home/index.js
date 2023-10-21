@@ -2,7 +2,7 @@ import { AntDesign, Entypo } from "@expo/vector-icons";
 import { Stack, useRouter } from "expo-router";
 import ExpoStatusBar from "expo-status-bar/build/ExpoStatusBar";
 import { useEffect, useState } from "react";
-import { ActivityIndicator, Modal, Pressable, ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, Modal, ScrollView, Text, TextInput, TouchableOpacity, View, Pressable } from "react-native";
 import Toast from "react-native-root-toast";
 import Svg, { Circle } from "react-native-svg";
 import BasicRowItem from "../../comp/BasicRowItem";
@@ -109,10 +109,7 @@ export default function Home() {
         router.push('/home/selectItem')
     }
 
-    function reset() {
-        storageMgr.reset()
-        router.replace('/home')
-    }
+
 
     function toggleSettingsModal() {
         setModalState(!modalState)
@@ -143,10 +140,7 @@ export default function Home() {
                         <Text className="text-2xl font-bold tracking-tight text-white pt-4 pl-6">Calories Budget</Text>
                         {progressCircle(calories, calorieBudget)}
                     </Pressable>
-                    {/* TODO: Remove */}
-                    <Pressable onPress={reset}>
-                        <Text>Reset</Text>
-                    </Pressable>
+
                     <View className="flex flex-row mb-4">
                         <TouchableOpacity className="basis-1/2 pr-2" onPress={openCardCreator}>
                             <View className="flex flex-col items-center bg-neutral-800 rounded-3xl shadow-md">
